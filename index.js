@@ -12,12 +12,16 @@ app.get("/", (req,res)=>{
 })
 
 app.post("/generate", async(req, res)=>{
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const address = `${protocol}://${host}/`; 
     const url = await req.body.url;
     function qrcodemaker(url){
         var svg_string = qr.imageSync( url , { type: 'svg' });
         res.render("index.ejs", {
             qrCode: svg_string,
-            url: req.body.url
+            url: req.body.url,
+            address: address
         }); 
     }
     qrcodemaker(url);
